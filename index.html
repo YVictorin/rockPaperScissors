@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Rock, Paper, Scissors Game</title>
+</head>
+<body>
+    <canvas id="canvas1"></canvas>
+
+    <div class="scoreboard">
+        <div class="scoreboard-title">Scoreboard</div>
+            <div class="scores">
+                <div class="ties-wrapper">0</div>
+                <a class=ties>Ties</a>
+                <div class="user-score">0</div> 
+                <a class="user">You</a>  
+                <div class="computer-score">0</div>
+                <a class="computer">Computer</a>
+            </div>
+    </div>
+
+    <div class="controls">
+            <form action="#" class="game-form">
+                <label for="animation">Choose Rock, Paper or Scissors</label>
+                <input type="text" id="choose" onchange="startAnimation(this)" placeholder="Enter your choice" required title="You must enter a choice">
+                <button type="submit">Play</button>
+            </form>
+            
+            <!-- <button value="Rock" id="rock">Rock</button>
+            <button value="Paper" id="paper">Paper</button>
+            <button value="Scissors" id="scissors">Scissors</button> -->
+<!--            
+            <label for="difficulty" id="difficulty-label">Easy or Hard mode</label>
+            <select name="difficulty" id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="hard">Hard</option>
+            </select>      -->
+
+            <div class="win-or-lose">
+               
+            </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

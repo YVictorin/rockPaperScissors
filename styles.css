@@ -1,0 +1,124 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+#canvas1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 600px;
+    height: 600px;
+}
+
+.controls {
+    position: absolute;
+    z-index: 100;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.controls, select, option {
+    font-size: 25px;
+}
+
+select#animation {
+    margin-bottom: 4rem;
+}
+
+.controls {
+    display: grid;
+}
+
+.win-or-lose {
+    display: grid;
+    place-content: center;
+    width: 400px;
+    height: 200px;
+}
+
+input {
+    width: 400px;
+    height: 32px;
+    padding: 0.33rem;
+    font-size: 1rem;
+}
+
+.scoreboard {
+    width: 300px;
+    aspect-ratio:  2/1;
+    background-color: red;
+    text-align: center;
+    padding-bottom: 2rem;
+    position: relative;
+    top: 10px;
+    left: 20px;
+
+   
+}
+
+.scoreboard-title {
+    padding-bottom: 0.5rem ;
+    padding-top: 0.5rem;
+    border-bottom: 2px solid black;
+    display: grid;
+    font-size: 25px;
+   
+}
+
+.scores {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    font-size: 7rem;
+
+    
+}
+
+.scores .user, .scores .computer {
+    font-size: 1rem;
+}
+
+.scores .ties-wrapper {
+    font-size: 1.5rem;
+    position: absolute;
+    left: 48%;
+}
+
+.ties {
+    position: absolute;
+    display: inline;
+    top: 36%;
+    left: 45%;
+    font-size: 1.1rem;
+    z-index: 10;
+}
+
+.user {
+  position: absolute;
+  width: 1%;
+  height: 1%;  
+  left: 20%;
+  bottom: 21%
+}
+
+.computer{
+  position: absolute;
+  width: 1%;
+  height: 1%;  
+  left: 65%;
+  bottom: 21%
+}
+button {
+    height: 20px;
+    width: 80px;
+    transform: translateX(8rem);
+}
+
+form  {
+    display: grid;
+    gap: 1rem;
+}
