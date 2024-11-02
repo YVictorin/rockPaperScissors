@@ -22,29 +22,24 @@
             </div>
     </div>
 
-    <div class="controls">
-            <form action="#" class="game-form">
-                <label for="animation">Choose Rock, Paper or Scissors</label>
-                <input type="text" id="choose" onchange="startAnimation(this)" placeholder="Enter your choice" required title="You must enter a choice">
-                <button type="submit">Play</button>
-            </form>
-             <button type="submit" id="reset-btn">Start Over</button>
-
-            
-            <!-- <button value="Rock" id="rock">Rock</button>
-            <button value="Paper" id="paper">Paper</button>
-            <button value="Scissors" id="scissors">Scissors</button> -->
-<!--            
-            <label for="difficulty" id="difficulty-label">Easy or Hard mode</label>
-            <select name="difficulty" id="difficulty">
-                <option value="easy">Easy</option>
-                <option value="hard">Hard</option>
-            </select>      -->
-
-            <div class="win-or-lose">
-               
-            </div>
+     <div class="controls">
+        <form action="#" class="game-form">
+            <label for="animation">Choose Rock, Paper or Scissors</label>
+            <input type="text" id="choose" onchange="startAnimation(this)" placeholder="Enter your choice" required title="You must enter a choice">
+            <button type="submit">Play</button>
+        </form>
+            <button type="submit" class="show-modal" id="reset-btn">Start Over</button>
+            <div class="win-or-lose"></div>
     </div>
+
+    <div class="modal hidden">
+        <button class="close-modal">&times;</button>
+        <h1>Invalid input detected.</h1>
+        &nbsp;
+        <h1>Restarting game...</h1>
+    </div>
+    <div class="overlay hidden"></div>
+
     <script src="script.js"></script>
 </body>
 </html>

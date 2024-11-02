@@ -1,3 +1,34 @@
+// Set up the game canvas 
+// Initialize game score counters for wins, losses, and ties
+
+// Helper function to get a random choice for the computer
+    // Pick a random number between 0 and 2 to represent rock, paper, or scissors
+    // Return this random choice
+
+// Function to decide the winner between the player and computer choices
+    // Get a new random choice for the computer
+    // If the player's choice beats, loses, or ties update the score accordingly
+
+// Function to reset the game for a new round
+    // Generate new random number and assign it to the previous random number
+    // Reset frames and variables to their original values
+    // Clear the game result message and player input
+    // Clear the canvas to reset the visuals
+
+// Function to check the player's input
+    // If the input is not "rock", "paper", or "scissors"
+        // Show an error modal 
+        // Reload the game to try again
+    // Return whether the input is valid
+
+// Main game function to start the round
+    // Stop the form from submitting normally
+    // Check if the input is valid
+    // If valid, start animations and determine the winner
+    // Set a delay, then reset the game for a new round
+
+'use strict';
+
 
 const canvas = document.getElementById('canvas1');
 const dropdown = document.getElementById('animation');
@@ -11,6 +42,10 @@ const form = document.querySelector('.game-form');
 const computerScore = document.querySelector('.computer-score');
 const ties = document.querySelector('.ties-wrapper');
 const resetBtn = document.getElementById("reset-btn");
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.close-modal');
 
 const CANVAS_WIDTH = canvas.width = 600;
 const CANVAS_HEIGHT = canvas.height = 600;
@@ -30,7 +65,7 @@ let gameScore = {
     ties: 0,
 };
 
-// this is a closure and it has a flag/boolean in order to make a function only runs once
+// this is a closure and it has a flag/null value in order to make a function only runs once
   function once(funcParam) {
     let returnedVal = null;
     return function(val) {
@@ -51,7 +86,6 @@ let computerChoice = once(randomNumber);
 
 
 function determineWinner(userChoice, computerChoice) {
-  
     switch (true) {
         //rock cases
         case(userChoice === 2 && computerChoice() === 1):      
@@ -162,17 +196,32 @@ function restartGame() {
 
 }
 
+function openErrorModal() {
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+}
+
 function validateInput() {
     let isValidInput;
+
     if(userChoice.value.trim().toLowerCase() != "rock" &&
        userChoice.value.trim().toLowerCase() != "paper" &&
        userChoice.value.trim().toLowerCase() != "scissors") {
-        isValidInput = false; 
-        alert('try again');
-        window.location.reload();
+        isValidInput = false;
+        // alert('try again');
+        // window.location.reload();
     } else {
         isValidInput = true;
     }
+
+    if(isValidInput === false) {
+        openErrorModal();
+
+        setTimeout(() => {
+            location.reload(true);
+        }, 1000);
+    }
+
     return isValidInput;
   }
 
@@ -224,7 +273,7 @@ function animate() {
                 }
                 
                 if(isRunning) {
-                    // because of this if statement this code block will only run every 24 frames, slowing down the animation by 24
+                    // because of this if statement this code block will only run every 34 frames, slowing down the animation by 24
                     if(gameFrame % slowDownAnimations == 0) {
                         if(frameX < 5) {
                             frameX++;
@@ -251,6 +300,7 @@ function animate() {
             validateInput();
             animate();  
             setTimeout(restartGame, 4000);
+            
     })
 
     resetBtn.addEventListener('click', () => {
