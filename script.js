@@ -3,8 +3,6 @@ const canvas = document.getElementById('canvas1');
 const dropdown = document.getElementById('animation');
 const ctx = canvas.getContext('2d');
 const rockOption = document.getElementById('paper');
-// const paperOption = document.getElementById('paper');
-// const scissorOption = document.getElementById('scissors');
 
 const winOrLose = document.querySelector('.win-or-lose');
 const userChoice = document.getElementById('choose');
@@ -12,6 +10,7 @@ const userScore = document.querySelector('.user-score');
 const form = document.querySelector('.game-form');
 const computerScore = document.querySelector('.computer-score');
 const ties = document.querySelector('.ties-wrapper');
+const resetBtn = document.getElementById("reset-btn");
 
 const CANVAS_WIDTH = canvas.width = 600;
 const CANVAS_HEIGHT = canvas.height = 600;
@@ -20,11 +19,10 @@ const rpsImage = new Image();
 rpsImage.src = 'images/rpsSpritesheet.png'
 const spriteWidth = 87; // ≈ the width of the spritesheet image divided my the amt of columns
 const spriteHeight = 167; // ≈ the height of the spritesheet image divided my the amt of rows
-let frameX = 0;
-let frameY = 2; //rock is the default
-let game = true;
+let frameX = 0, frameY = 2; //rock is the default
 let gameFrame = 0;
 const slowDownAnimations = 34; //will slow down animation by 34
+
 
 let gameScore = {
     wins: 0,
@@ -32,7 +30,7 @@ let gameScore = {
     ties: 0,
 };
 
-// this is a closure and it has a flag/boolean in order to make a function only run once
+// this is a closure and it has a flag/boolean in order to make a function only runs once
   function once(funcParam) {
     let returnedVal = null;
     return function(val) {
@@ -44,60 +42,61 @@ let gameScore = {
   };
 
 
-  function randomNumber(nums = 3) {
-      return Math.floor(Math.random() * nums) ;
+  function randomNumber() {
+      return Math.floor(Math.random() * 3) ;
   }
 
 
-let easyComputerChoice = once(randomNumber);
+let computerChoice = once(randomNumber);
 
-function determineWinner(userChoice = 2, levelOfMode = easyComputerChoice) {
+
+function determineWinner(userChoice, computerChoice) {
   
     switch (true) {
         //rock cases
-        case(userChoice === 2 && levelOfMode() === 1):      
+        case(userChoice === 2 && computerChoice() === 1):      
             winOrLose.innerHTML = 'Computer wins!';  
             gameScore.loses += 1;
             computerScore.innerHTML = gameScore.loses;
             break;
-        case(userChoice === 2 && levelOfMode() === 0):
+        case(userChoice === 2 && computerChoice() === 0):
             winOrLose.innerHTML = 'You win!';
             gameScore.wins += 1;
             userScore.innerHTML = gameScore.wins;
             break;
-        case(userChoice === 2 && levelOfMode() === 2):
+        case(userChoice === 2 && computerChoice() === 2):
             winOrLose.innerHTML = "It's a tie";
             gameScore.ties += 1;
             ties.innerHTML = gameScore.ties;
             break;
         //paper cases
-        case(userChoice === 1 && levelOfMode() === 0):
+        case(userChoice === 1 && computerChoice() === 0):
             winOrLose.innerHTML = 'Computer wins!';
             gameScore.loses += 1;
             computerScore.innerHTML = gameScore.loses;
             break;
-        case(userChoice === 1 && levelOfMode() === 2):
+        case(userChoice === 1 && computerChoice() === 2):
             winOrLose.innerHTML = 'You win!';
             gameScore.wins += 1;
             userScore.innerHTML = gameScore.wins;
             break;
-        case(userChoice === 1 && levelOfMode() === 1):
+        case(userChoice === 1 && computerChoice() === 1):
             winOrLose.innerHTML = "It's a tie";
             gameScore.ties += 1;
             ties.innerHTML = gameScore.ties;
             break;
         //scissor cases
-        case(userChoice === 0 && levelOfMode() === 1):
+        case(userChoice === 0 && computerChoice() === 1):
             winOrLose.innerHTML = 'You win!';
             gameScore.wins += 1;
             userScore.innerHTML = gameScore.wins;
             break;
-            case(userChoice === 0 && levelOfMode() === 0):
+            case(userChoice === 0 && computerChoice() === 0):
             winOrLose.innerHTML = "It's a tie!";
             ties.innerHTML = gameScore.ties;
             gameScore.ties += 1;
             break;
-        case(userChoice === 0 && levelOfMode() === 2):
+        case(userChoice === 0 && computerChoice() === 2):
             winOrLose.innerHTML = "Computer wins!"; 
             gameScore.loses += 1;
             computerScore.innerHTML = gameScore.loses;
@@ -108,26 +107,50 @@ function determineWinner(userChoice = 2, levelOfMode = easyComputerChoice) {
 
  
 
-function startAnimation() {
+function startAnimation() { 
    setTimeout(() => {
+        let userMove = frameY;
+
+        //determines the winner after 2 seconds
         if(userChoice.value.trim().toLowerCase() === 'scissors') {
-            frameY = 0;
-            determineWinner(frameY, easyComputerChoice);
+            userMove = 0;
+            determineWinner(userMove, computerChoice);
         } else if (userChoice.value.trim().toLowerCase() === 'paper') {
-            frameY = 1;
-            determineWinner(frameY, easyComputerChoice);
+            userMove = 1;
+            determineWinner(userMove, computerChoice);
         } else {
-            frameY = 2; //rock
-            determineWinner(frameY, easyComputerChoice);
+            userMove = 2; //rock
+            determineWinner(userMove, computerChoice);
         }
         
    }, 2000);
 
+}
 
+function convertValues() {
+    let userMove = frameY;
+    if(userChoice.value.trim().toLowerCase() === 'scissors') {
+        userMove = 0;
+    } else if (userChoice.value.trim().toLowerCase() === 'paper') {
+        userMove = 1;       
+    } else {
+        userMove = 2; //rock
+    }
 
+    return userMove;
 }
 
 function restartGame() {
+     
+    //generate a new unique random number and set equal to the random number from last round
+    let newcomputerChoice = once(randomNumber);
+
+    if(computerChoice() !== newcomputerChoice()) {
+        computerChoice = newcomputerChoice;
+    } else {
+        let anotherChoice = once(randomNumber);
+        computerChoice = anotherChoice;
+    }   
     // Reset the frames back to the beginning 
     frameX = 0;
     frameY = 2; // Reset to rock as default
@@ -137,10 +160,6 @@ function restartGame() {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); //resets the canvas
 
-    // rpsImage.parentElement.removeChild(rpsImage);
-
-    // // Restart animation
-    // animate();
 }
 
 function validateInput() {
@@ -161,7 +180,7 @@ function validateInput() {
 function drawStatic() {
     //the computer's hand
     ctx.drawImage(rpsImage, 
-        frameX * spriteWidth, easyComputerChoice() * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
+        frameX * spriteWidth, computerChoice() * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
         500, 300, spriteWidth, spriteHeight //where you want the cropped img to display on the canvas  
     ); 
 
@@ -175,33 +194,33 @@ ctx.drawImage(rpsImage,
 }
 
 
-
-
 function animate() {
-     
             let isRunning = true;
-            
-       
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); //clears the canvas on every iteration
     
+           
+
             //the computer's hand
                 ctx.drawImage(rpsImage, 
-                        frameX * spriteWidth, easyComputerChoice() * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
-                        500, 300, spriteWidth, spriteHeight //where you want the cropped img to display on the canvas  
-                    ); 
-
+                    frameX * spriteWidth, computerChoice() * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
+                    500, 300, spriteWidth, spriteHeight //where you want the cropped img to display on the canvas  
+               ); 
+       
 
             //the player's hand
             ctx.drawImage(rpsImage, 
-                frameX * spriteWidth, frameY * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
+                frameX * spriteWidth, convertValues() * spriteHeight, spriteWidth, spriteHeight, //the rectangular area you want to crop out from the spritesheet
                 0, 300, spriteWidth, spriteHeight //where you want the cropped img to display on the canvas  
                 ); 
                 
 
-                //stops the animation after the last frame
                 if(frameX == 5) {
-                    isRunning = false;
-                    return; 
+                    frameX++ //added this to remove strange duplication of the user's hand
+                    //stops the animation on the last frame
+                    if(frameX == 6) {
+                        isRunning = false;
+                        return; 
+                    }
                 }
                 
                 if(isRunning) {
@@ -223,6 +242,7 @@ function animate() {
              requestAnimationFrame(animate);
      };
 
+     
      drawStatic();
 
 
@@ -230,10 +250,11 @@ function animate() {
             e.preventDefault();
             validateInput();
             animate();  
-            setTimeout(restartGame, 5000);
-            console.log(easyComputerChoice());
-        
-       
+            setTimeout(restartGame, 4000);
+    })
+
+    resetBtn.addEventListener('click', () => {
+        window.location.reload();
     })
 
 

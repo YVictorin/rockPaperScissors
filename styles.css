@@ -112,10 +112,18 @@ input {
   left: 65%;
   bottom: 21%
 }
-button {
+button:not(#reset-btn) {
     height: 20px;
     width: 80px;
-    transform: translateX(8rem);
+    transform: translateX(4rem);
+}
+
+#reset-btn {
+    position: absolute;
+    height: 20px;
+    width: 80px; 
+    top: 5.9rem;
+    left: 15rem;
 }
 
 form  {
